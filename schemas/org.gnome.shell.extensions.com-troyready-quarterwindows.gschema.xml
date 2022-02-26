@@ -1,0 +1,22 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.com-troyready-quarterwindows" path="/org/gnome/shell/extensions/com-troyready-quarterwindows/">
+
+    <key type="as" name="put-to-corner-ne">
+      <default><![CDATA[['<Primary><Super>i']]]></default>
+      <summary>Move to the top right corner</summary>
+    </key>
+    <key type="as" name="put-to-corner-nw">
+      <default><![CDATA[['<Primary><Super>u']]]></default>
+      <summary>Move to the top left corner</summary>
+    </key>
+    <key type="as" name="put-to-corner-se">
+      <default><![CDATA[['<Primary><Super>k']]]></default>
+      <summary>Move to the bottom right corner</summary>
+    </key>
+    <key type="as" name="put-to-corner-sw">
+      <default><![CDATA[['<Primary><Super>j']]]></default>
+      <summary>Move to the bottom left corner</summary>
+    </key>
+
+  </schema>
+</schemalist>
