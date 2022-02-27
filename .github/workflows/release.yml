@@ -1,0 +1,26 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # https://stackoverflow.com/a/58178121
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Archive Release
+      uses: thedoctor0/zip-release@0.6.1
+      with:
+        type: zip
+        filename: "quarterwindows@troyready.com-${{ env.RELEASE_VERSION }}.zip"
+        exclusions: '*.git* /*node_modules/* .editorconfig CONTRIBUTING.md package-lock.json package.json'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "quarterwindows@troyready.com-${{ env.RELEASE_VERSION }}.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
