@@ -16,30 +16,14 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-const { Gio, Meta, Shell } = imports.gi;
+const { Meta, Shell } = imports.gi;
 const Main = imports.ui.main;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 
 class Extension {
   constructor() {
     this.directions = ["ne", "nw", "se", "sw"];
-  }
-
-  getSettings() {
-    let GioSSS = Gio.SettingsSchemaSource;
-    let schemaSource = GioSSS.new_from_directory(
-      Me.dir.get_child("schemas").get_path(),
-      GioSSS.get_default(),
-      false,
-    );
-    let schemaObj = schemaSource.lookup(
-      "org.gnome.shell.extensions.com-troyready-quarterwindows",
-      true,
-    );
-    if (!schemaObj) {
-      throw new Error("Cannot find schemas");
-    }
-    return new Gio.Settings({ settings_schema: schemaObj });
   }
 
   moveWindow(corner) {
@@ -101,7 +85,9 @@ class Extension {
   }
 
   enable() {
-    let settings = this.getSettings();
+    let settings = ExtensionUtils.getSettings(
+      "org.gnome.shell.extensions.com-troyready-quarterwindows",
+    );
     let mode = Shell.ActionMode.NORMAL;
     let flag = Meta.KeyBindingFlags.NONE;
 
