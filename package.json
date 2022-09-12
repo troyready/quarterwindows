@@ -7,8 +7,8 @@
     "prettier": "^2.5.1"
   },
   "scripts": {
-    "lint": "prettier -c extension.js",
-    "lintfix": "prettier -w extension.js",
+    "lint": "prettier -c extension.js putWindow/utils.js",
+    "lintfix": "prettier -w extension.js putWindow/utils.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Troy Ready",

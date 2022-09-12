@@ -18,5 +18,22 @@
       <summary>Move to the bottom left corner</summary>
     </key>
 
+    <key type="as" name="move-focus-w">
+      <default><![CDATA[['<Shift><Super>h']]]></default>
+      <summary>Focus the window that's west of the current window</summary>
+    </key>
+    <key type="as" name="move-focus-s">
+      <default><![CDATA[['<Shift><Super>j']]]></default>
+      <summary>Focus the window that's south of the current window</summary>
+    </key>
+    <key type="as" name="move-focus-n">
+      <default><![CDATA[['<Shift><Super>k']]]></default>
+      <summary>Focus the window that's north of the current window</summary>
+    </key>
+    <key type="as" name="move-focus-e">
+      <default><![CDATA[['<Shift><Super>l']]]></default>
+      <summary>Focus the window that's east of the current window</summary>
+    </key>
+
   </schema>
 </schemalist>

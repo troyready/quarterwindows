@@ -20,10 +20,12 @@ const { Meta, Shell } = imports.gi;
 const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const PutWindowUtils = Me.imports.putWindow.utils;
 
 class Extension {
   constructor() {
-    this.directions = ["ne", "nw", "se", "sw"];
+    this.corners = ["ne", "nw", "se", "sw"];
+    this.directions = ["w", "s", "n", "e"];
   }
 
   moveWindow(corner) {
@@ -84,6 +86,41 @@ class Extension {
     });
   }
 
+  moveFocus(direction) {
+    let otherWindows = [];
+    let focusedWindow;
+    let candidates = [];
+
+    for (let i = 0; i < global.get_window_actors().length; i++) {
+      if (global.get_window_actors()[i].meta_window.has_focus()) {
+        focusedWindow = global.get_window_actors()[i];
+      } else {
+        otherWindows.push(global.get_window_actors()[i]);
+      }
+    }
+    if (focusedWindow == null || otherWindows.length == 0) {
+      return false;
+    } else {
+      for (let i = 0; i < otherWindows.length; i++) {
+        if (
+          PutWindowUtils.isFocusCandidate(
+            focusedWindow,
+            otherWindows[i],
+            direction,
+          )
+        ) {
+          if (!otherWindows[i].meta_window.is_hidden()) {
+            candidates.push({
+              window: otherWindows[i],
+              dist: PutWindowUtils.getDistance(focusedWindow, otherWindows[i]),
+            });
+          }
+        }
+      }
+      PutWindowUtils.findAndActivateNearestCandidate(candidates);
+    }
+  }
+
   enable() {
     let settings = ExtensionUtils.getSettings(
       "org.gnome.shell.extensions.com-troyready-quarterwindows",
@@ -91,22 +128,38 @@ class Extension {
     let mode = Shell.ActionMode.NORMAL;
     let flag = Meta.KeyBindingFlags.NONE;
 
-    for (let i = 0; i < this.directions.length; i++) {
+    for (let i = 0; i < this.corners.length; i++) {
       Main.wm.addKeybinding(
-        "put-to-corner-" + this.directions[i],
+        "put-to-corner-" + this.corners[i],
         settings,
         flag,
         mode,
         () => {
-          this.moveWindow(this.directions[i]);
+          this.moveWindow(this.corners[i]);
+        },
+      );
+    }
+
+    for (let i = 0; i < this.directions.length; i++) {
+      Main.wm.addKeybinding(
+        "move-focus-" + this.directions[i],
+        settings,
+        flag,
+        mode,
+        () => {
+          this.moveFocus(this.directions[i]);
         },
       );
     }
   }
 
   disable() {
+    for (let i = 0; i < this.corners.length; i++) {
+      Main.wm.removeKeybinding("put-to-corner-" + this.corners[i]);
+    }
+
     for (let i = 0; i < this.directions.length; i++) {
-      Main.wm.removeKeybinding("put-to-corner-" + this.directions[i]);
+      Main.wm.removeKeybinding("move-focus-" + this.directions[i]);
     }
   }
 }

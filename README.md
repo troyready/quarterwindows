@@ -12,6 +12,14 @@ This extension adds shortcuts for window management.
     * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/put-to-corner-se "['<Primary><Super>k']"`
 1. Move window to lower left ("southwest") corner: `Ctrl + Win + j`
     * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/put-to-corner-sw "['<Primary><Super>j']"`
+1. Move window focus to the left ("west"): `Shift + Win + h`
+    * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/move-focus-w "['<Shift><Super>h']"`
+1. Move window focus down ("south"): `Shift + Win + j`
+    * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/move-focus-s "['<Shift><Super>j']"`
+1. Move window focus up ("north"): `Shift + Win + k`
+    * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/move-focus-n "['<Shift><Super>k']"`
+1. Move window focus to the right ("east"): `Shift + Win + l`
+    * Can be customized via: `dconf write /org/gnome/shell/extensions/com-troyready-quarterwindows/move-focus-w "['<Shift><Super>l']"`
 
 #### Determining Shortcut Keys
 
