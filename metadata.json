@@ -4,9 +4,10 @@
   "shell-version": [
     "41",
     "42",
-    "43"
+    "43",
+    "44"
   ],
   "url": "https://github.com/troyready/quarterwindows",
   "uuid": "quarterwindows@troyready.com",
-  "version": 5
+  "version": 6
 }
