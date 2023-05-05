@@ -28,7 +28,7 @@ class Extension {
     this.directions = ["w", "s", "n", "e"];
   }
 
-  moveWindow(corner) {
+  moveWindow(location) {
     global.get_window_actors().every((w) => {
       if (w.meta_window.has_focus()) {
         var monitorGeometry = global.display.get_monitor_geometry(
@@ -42,7 +42,7 @@ class Extension {
         if (w.meta_window.get_maximized()) {
           w.meta_window.unmaximize(3); // META_MAXIMIZE_BOTH
         }
-        switch (corner) {
+        switch (location) {
           case "ne":
             w.meta_window.move_resize_frame(
               0,
@@ -77,6 +77,42 @@ class Extension {
               monitorUpperLeftY + monitorHalfHeight,
               monitorHalfWidth,
               monitorHalfHeight,
+            );
+            break;
+          case "n":
+            w.meta_window.move_resize_frame(
+              0,
+              monitorUpperLeftX,
+              monitorUpperLeftY,
+              monitorGeometry.width,
+              monitorHalfHeight,
+            );
+            break;
+          case "s":
+            w.meta_window.move_resize_frame(
+              0,
+              monitorUpperLeftX,
+              monitorUpperLeftY + monitorHalfHeight,
+              monitorGeometry.width,
+              monitorHalfHeight,
+            );
+            break;
+          case "w":
+            w.meta_window.move_resize_frame(
+              0,
+              monitorUpperLeftX,
+              monitorUpperLeftY,
+              monitorHalfWidth,
+              monitorGeometry.height,
+            );
+            break;
+          case "e":
+            w.meta_window.move_resize_frame(
+              0,
+              monitorUpperLeftX + monitorHalfWidth,
+              monitorUpperLeftY,
+              monitorHalfWidth,
+              monitorGeometry.height,
             );
             break;
         }
@@ -150,6 +186,15 @@ class Extension {
           this.moveFocus(this.directions[i]);
         },
       );
+      Main.wm.addKeybinding(
+        "put-to-half-" + this.directions[i],
+        settings,
+        flag,
+        mode,
+        () => {
+          this.moveWindow(this.directions[i]);
+        },
+      );
     }
   }
 
@@ -160,6 +205,7 @@ class Extension {
 
     for (let i = 0; i < this.directions.length; i++) {
       Main.wm.removeKeybinding("move-focus-" + this.directions[i]);
+      Main.wm.removeKeybinding("put-to-half-" + this.directions[i]);
     }
   }
 }

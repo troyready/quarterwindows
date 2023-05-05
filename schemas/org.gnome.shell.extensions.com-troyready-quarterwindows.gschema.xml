@@ -18,6 +18,23 @@
       <summary>Move to the bottom left corner</summary>
     </key>
 
+    <key type="as" name="put-to-half-w">
+      <default><![CDATA[['<Primary><Super>Left']]]></default>
+      <summary>Move to the left half</summary>
+    </key>
+    <key type="as" name="put-to-half-s">
+      <default><![CDATA[['<Primary><Super>Down']]]></default>
+      <summary>Move to the bottom half</summary>
+    </key>
+    <key type="as" name="put-to-half-n">
+      <default><![CDATA[['<Primary><Super>Up']]]></default>
+      <summary>Move to the top half</summary>
+    </key>
+    <key type="as" name="put-to-half-e">
+      <default><![CDATA[['<Primary><Super>Right']]]></default>
+      <summary>Move to the right half</summary>
+    </key>
+
     <key type="as" name="move-focus-w">
       <default><![CDATA[['<Shift><Super>h']]]></default>
       <summary>Focus the window that's west of the current window</summary>
