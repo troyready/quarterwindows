@@ -31,8 +31,9 @@ class Extension {
   moveWindow(location) {
     global.get_window_actors().every((w) => {
       if (w.meta_window.has_focus()) {
-        var monitorGeometry = global.display.get_monitor_geometry(
-          w.meta_window.get_monitor(),
+        const workspace = global.workspace_manager.get_active_workspace();
+        var monitorGeometry = workspace.get_work_area_for_monitor(
+          w.meta_window.get_monitor().index,
         );
         var monitorUpperLeftX = monitorGeometry.x;
         var monitorUpperLeftY = monitorGeometry.y;
