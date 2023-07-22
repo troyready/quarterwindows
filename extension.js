@@ -31,10 +31,11 @@ class Extension {
   moveWindow(location) {
     global.get_window_actors().every((w) => {
       if (w.meta_window.has_focus()) {
-        const workspace = global.workspace_manager.get_active_workspace();
-        var monitorGeometry = workspace.get_work_area_for_monitor(
-          w.meta_window.get_monitor().index,
-        );
+        var monitorGeometry = Meta.is_wayland_compositor()
+          ? global.workspace_manager
+              .get_active_workspace()
+              .get_work_area_for_monitor(w.meta_window.get_monitor().index)
+          : global.display.get_monitor_geometry(w.meta_window.get_monitor());
         var monitorUpperLeftX = monitorGeometry.x;
         var monitorUpperLeftY = monitorGeometry.y;
         var monitorHalfWidth = Math.floor(monitorGeometry.width / 2);
