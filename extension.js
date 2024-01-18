@@ -16,38 +16,39 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-const { Meta, Shell } = imports.gi;
-const Main = imports.ui.main;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const PutWindowUtils = Me.imports.putWindow.utils;
+import Meta from "gi://Meta";
+import Shell from "gi://Shell";
 
-class Extension {
-  constructor() {
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+
+import * as PutWindowUtils from "./putWindow/utils.js";
+
+export default class QuarterWindowExtension extends Extension {
+  constructor(metadata) {
+    super(metadata);
     this.corners = ["ne", "nw", "se", "sw"];
     this.directions = ["w", "s", "n", "e"];
   }
 
-  moveWindow(location) {
+  tileWindow(location) {
     global.get_window_actors().every((w) => {
       if (w.meta_window.has_focus()) {
-        var monitorGeometry = Meta.is_wayland_compositor()
-          ? global.workspace_manager
-              .get_active_workspace()
-              .get_work_area_for_monitor(w.meta_window.get_monitor().index)
-          : global.display.get_monitor_geometry(w.meta_window.get_monitor());
-        var monitorUpperLeftX = monitorGeometry.x;
-        var monitorUpperLeftY = monitorGeometry.y;
-        var monitorHalfWidth = Math.floor(monitorGeometry.width / 2);
-        var monitorHalfHeight = Math.floor(monitorGeometry.height / 2);
+        var monitorIdx = w.meta_window.get_monitor();
+        var workArea = Main.layoutManager.getWorkAreaForMonitor(monitorIdx);
+
+        var monitorUpperLeftX = workArea.x;
+        var monitorUpperLeftY = workArea.y;
+        var monitorHalfWidth = Math.floor(workArea.width / 2);
+        var monitorHalfHeight = Math.floor(workArea.height / 2);
 
         if (w.meta_window.get_maximized()) {
           w.meta_window.unmaximize(3); // META_MAXIMIZE_BOTH
         }
         switch (location) {
           case "ne":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX + monitorHalfWidth,
               monitorUpperLeftY,
               monitorHalfWidth,
@@ -55,8 +56,8 @@ class Extension {
             );
             break;
           case "nw":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX,
               monitorUpperLeftY,
               monitorHalfWidth,
@@ -64,8 +65,8 @@ class Extension {
             );
             break;
           case "se":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX + monitorHalfWidth,
               monitorUpperLeftY + monitorHalfHeight,
               monitorHalfWidth,
@@ -73,8 +74,8 @@ class Extension {
             );
             break;
           case "sw":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX,
               monitorUpperLeftY + monitorHalfHeight,
               monitorHalfWidth,
@@ -82,39 +83,39 @@ class Extension {
             );
             break;
           case "n":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX,
               monitorUpperLeftY,
-              monitorGeometry.width,
+              workArea.width,
               monitorHalfHeight,
             );
             break;
           case "s":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX,
               monitorUpperLeftY + monitorHalfHeight,
-              monitorGeometry.width,
+              workArea.width,
               monitorHalfHeight,
             );
             break;
           case "w":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX,
               monitorUpperLeftY,
               monitorHalfWidth,
-              monitorGeometry.height,
+              workArea.height,
             );
             break;
           case "e":
-            w.meta_window.move_resize_frame(
-              0,
+            this.moveAndResizeWindow(
+              w.meta_window,
               monitorUpperLeftX + monitorHalfWidth,
               monitorUpperLeftY,
               monitorHalfWidth,
-              monitorGeometry.height,
+              workArea.height,
             );
             break;
         }
@@ -159,10 +160,13 @@ class Extension {
     }
   }
 
+  moveAndResizeWindow(window, x, y, width, height) {
+    window.move_frame(true, x, y);
+    window.move_resize_frame(true, x, y, width, height);
+  }
+
   enable() {
-    let settings = ExtensionUtils.getSettings(
-      "org.gnome.shell.extensions.com-troyready-quarterwindows",
-    );
+    let settings = this.getSettings();
     let mode = Shell.ActionMode.NORMAL;
     let flag = Meta.KeyBindingFlags.NONE;
 
@@ -173,7 +177,7 @@ class Extension {
         flag,
         mode,
         () => {
-          this.moveWindow(this.corners[i]);
+          this.tileWindow(this.corners[i]);
         },
       );
     }
@@ -194,7 +198,7 @@ class Extension {
         flag,
         mode,
         () => {
-          this.moveWindow(this.directions[i]);
+          this.tileWindow(this.directions[i]);
         },
       );
     }
@@ -210,8 +214,4 @@ class Extension {
       Main.wm.removeKeybinding("put-to-half-" + this.directions[i]);
     }
   }
-}
-
-function init() {
-  return new Extension();
 }

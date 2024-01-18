@@ -5,9 +5,11 @@
     "41",
     "42",
     "43",
-    "44"
+    "44",
+    "45"
   ],
   "url": "https://github.com/troyready/quarterwindows",
   "uuid": "quarterwindows@troyready.com",
+  "settings-schema": "org.gnome.shell.extensions.com-troyready-quarterwindows",
   "version": 9
 }
