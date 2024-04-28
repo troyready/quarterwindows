@@ -2,7 +2,8 @@
   "description": "Add additional window management shortcuts",
   "name": "Quarter Windows",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/troyready/quarterwindows",
   "uuid": "quarterwindows@troyready.com",
