@@ -10,7 +10,7 @@
 let angleCorrection = 20;
 let distanceCorrection = 10;
 
-function findAndActivateNearestCandidate(candidates) {
+export function findAndActivateNearestCandidate(candidates) {
   if (candidates.length == 0) return;
 
   candidates.sort(function (a, b) {
@@ -24,7 +24,7 @@ function findAndActivateNearestCandidate(candidates) {
   candidates[0].window.meta_window.activate(global.get_current_time());
 }
 
-function getDistance(focusWin, candidateWin) {
+export function getDistance(focusWin, candidateWin) {
   let focus = getWindowCenter(focusWin.meta_window.get_frame_rect());
   let candidate = getWindowCenter(candidateWin.meta_window.get_frame_rect());
 
@@ -41,7 +41,7 @@ function getWindowCenter(windows_frame_rect) {
   };
 }
 
-function isFocusCandidate(focusWin, candidateWin, direction) {
+export function isFocusCandidate(focusWin, candidateWin, direction) {
   let focusRect = focusWin.meta_window.get_frame_rect();
   let focus = getWindowCenter(focusRect);
 
