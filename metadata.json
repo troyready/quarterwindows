@@ -1,13 +1,9 @@
 {
   "description": "Add additional window management shortcuts",
   "name": "Quarter Windows",
-  "shell-version": [
-    "45",
-    "46",
-    "47"
-  ],
+  "shell-version": ["45", "46", "47", "48"],
   "url": "https://github.com/troyready/quarterwindows",
   "uuid": "quarterwindows@troyready.com",
   "settings-schema": "org.gnome.shell.extensions.com-troyready-quarterwindows",
-  "version": 13
+  "version": 14
 }
