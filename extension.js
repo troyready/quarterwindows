@@ -42,7 +42,7 @@ export default class QuarterWindowExtension extends Extension {
         var monitorHalfWidth = Math.floor(workArea.width / 2);
         var monitorHalfHeight = Math.floor(workArea.height / 2);
 
-        if (w.meta_window.get_maximized()) {
+        if (w.meta_window.is_maximized()) {
           w.meta_window.unmaximize(3); // META_MAXIMIZE_BOTH
         }
         switch (location) {
